@@ -1,20 +1,450 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container-fluid">
+  <div class="Header" style="text-align: center; margin-top: 20px;">
+    <h1 style="font-family: 'Burbank Big Condensed Bold'; font-size: 65px;">SLOVENSKA FORTNITE LESTVICA</h1>
+    <h3 style="font-family: 'Burbank Big Condensed Bold';">3. sezona</h3>
+  </div>
 
+
+  <!--ADD USER FORM______________________________________ADD USER FORM________________________________ADD USER FORM-->
+  <div class="row" style="margin-top: 75px">
+    <div class="col-xl-2"></div>
+    <div class="col-xl-5 AddUser">
+      <div class="FormDiv">
+        <h4>Dodaj igralca</h4>
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+          <div class="form-row align-items-center">
+            <div class="col-auto">
+              <label class="sr-only" for="inlineFormInputGroup">Igralec</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <span (click)="OnChangePlatform('pc')" [class.selectedPC]="Platform=='pc'" class="pc">
+                      <i class="fas fa-desktop"></i>
+                    </span>
+                    <span (click)="OnChangePlatform('psn')" [class.selectedPSN]="Platform=='psn'" class="psn">
+                      <i class="fab fa-playstation"></i>
+                    </span>
+                    <span (click)="OnChangePlatform('xbl')" [class.selectedXBOX]="Platform=='xbl'" class="xbox" style="margin-right: 0px">
+                      <i class="fab fa-xbox"></i>
+                    </span>
+                  </div>
+                </div>
+                <input type="text" name="igralec" id="igralec" class="form-control" placeholder="Ninja" ngModel required>
+              </div>
+            </div>
+
+            <div class="col-auto input-help" style="margin-top: 15px;">
+              <label class="sr-only" for="inlineFormInputGroup">Twitch</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text" *ngIf="!NewUserTwitch">
+                    <i class="fa fa-twitch" style="cursor: auto; color: #AAAFB4"></i>
+                  </div>
+                  <div *ngIf="NewUserTwitch" class="input-group-text">
+                    <i class="fa fa-twitch fa-lg" style="cursor: auto;"></i>
+                  </div>
+                </div>
+                <input type="text" name="twitch" id="twitch" class="form-control" placeholder="/ninja" [(ngModel)]="NewUserTwitch">
+              </div>
+              <small id="passwordHelpBlock" class="form-text text-muted">Neobvezno</small>
+            </div>
+
+            <div class="col-auto">
+              <button style="width: 100px;" type="submit" [disabled]="!f.valid" [class.btn-outline-success]="!f.valid" [class.btn-success]="f.valid"
+                class="btn btn-primary mb-2">Dodaj</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="opis" style="margin-top: 10px;">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultricies nibh eu urna posuere cursus. Vivamus risus
+          magna, ullamcorper id tellus iaculis, egestas egestas nibh. Ut tincidunt magna sed nibh dictum posuere. Aenean
+          feugiat mollis purus, quis porttitor arcu sollicitudin non. Sed dolor erat, commodo ut odio molestie, porttitor
+          vulputate massa. Duis vehicula maximus ante sed lacinia.</p>
+      </div>
+    </div>
+    <div class="col-xl-3">
+      <!--    <div class="currentlyFeatured" style="text-align:center">
+        <h5>Trenutno izpostavljeni: &nbsp; &nbsp; &nbsp;
+          <b>{{CurretnlyFeatured}}</b>
+        </h5>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Ime</th>
+              <th scope="col">{{CurretnlyFeatured}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1.</th>
+              <td>
+                <span style="font-size: 20px; color: gold; margin-right: 5px;">
+                  <i class="fa fa-trophy"></i>
+                </span>
+                Mark
+                <span style="font-size: 18px">
+                  <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 5px;"></i>
+                </span>
+              </td>
+              <td>Otto</td>
+            </tr>
+            <tr>
+              <th scope="row">2.</th>
+              <td>
+                <span style="font-size: 20px; color: silver">
+                  <i class="fa fa-trophy"></i>
+                </span>
+                Jacob
+                <span style="font-size: 18px">
+                  <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 5px;"></i>
+                </span>
+              </td>
+              <td>Thornton</td>
+            </tr>
+            <tr>
+              <th scope="row">3.</th>
+              <td>
+                <span style="font-size: 20px; color: #cd7f32">
+                  <i class="fa fa-trophy"></i>
+                </span>
+                Jacob
+                <span style="font-size: 18px">
+                  <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 5px;"></i>
+                </span>
+              </td>
+              <td>Larry the Bird</td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+
+      <div class="card border-secondary mb-3">
+        <div class="card-header">
+          <span class="pull-left">
+            <h5>Trenutno izpostavljeni:</h5>
+          </span>
+          <span class="pull-right">
+            <h5>
+              <b>{{CurretnlyFeatured}}</b> ({{Platform}})
+            </h5>
+          </span>
+        </div>
+        <div class="card-body" style="padding-bottom: 0px;">
+          <table class="table table-hover" style="margin-top: -22px;">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ime</th>
+                <th scope="col">{{CurretnlyFeatured}}</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let User of CurrentlyFeaturedTable; let i = index">
+              <tr>
+                <th scope="row">{{i+1}}</th>
+                <td>
+                  <span *ngIf="i==0" style="font-size: 20px; color: gold; margin-right: 5px;">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==1" style="font-size: 19px; color: silver; margin-right: 5px;">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==2" style="font-size: 18px; color: #cd7f32; margin-right: 5px;">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  {{User.username}}
+                  <span style="font-size: 18px">
+                    <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto;  margin-left: 5px;" *ngIf="!User.twitchUsername"></i>
+                  </span>
+                  <span style="font-size: 20px">
+                    <i class="fab fa-twitch" style=" margin-left: 5px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
+                  </span>
+                  <div style="font-size: 12px; display: inline-block;" *ngIf="User.live">
+                    <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
+                    <small class="text-danger" >{{User.liveCount}}</small>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  {{User[FeaturedItem]}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+
+  <!-- SOLO___________________________________________________SOLO_____________________________________________________SOLO -->
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+
+      <div class="Head">
+        <h4>Platforma </h4>
+      </div>
+      <div class="Tabs">
+        <ul class="nav nav-pills">
+
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="SelectedPlatform=='pc'" (click)="onChangeTypePlatform('pc')">PC</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="SelectedPlatform=='psn'" (click)="onChangeTypePlatform('psn')">Playstation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="SelectedPlatform=='xbl'" (click)="onChangeTypePlatform('xbl')">Xbox</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="SelectedPlatform=='all'" (click)="onChangeTypePlatform('all')">Vsi</a>
+          </li>
+        </ul>
+      </div>
+
+
+      <!-- 
+      <div class="card border-success mb-3" style="margin-top: 37px;">
+        <div class="card-header">
+          <span class="pull-left" style="margin-bottom: -14px; margin-left: -20px;">
+            <div class="Tabs" style="text-align: center;">
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link" [class.active]="RatingType==1" (click)="onChangeType(1)">Solo</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [class.active]="RatingType==2" (click)="onChangeType(2)">Duo</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [class.active]="RatingType==3" (click)="onChangeType(3)">Squad</a>
+                </li>
+              </ul>
+            </div>
+          </span>
+          <span class="pull-right"  style="margin-bottom: -14px; margin-right: -20px;">
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="text" name="Search" placeholder="Išči" [(ngModel)]="Search">
+            </form>
+          </span>
+        </div>
+        <div class="card-body">
+            <div class="FullTableSolo" *ngIf="RatingType==1" style="text-align:center">
+                <div>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ime</th>
+                        <th scope="col">Točke</th>
+                        <th scope="col">Solo zmage</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let User of FullTable; let i = index">
+                      <tr [class.searched]="User.username==Search">
+                        <th scope="row" style="vertical-align: middle;">
+                          <b>{{i+1}}.</b>
+                        </th>
+                        <td>
+                          <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                            <i class="fa fa-trophy"></i>
+                          </span>
+                          <span *ngIf="i==1" style="font-size: 25px; color: silver">
+                            <i class="fa fa-trophy"></i>
+                          </span>
+                          <span *ngIf="i==2" style="font-size: 25px; color: #cd7f32">
+                            <i class="fa fa-trophy"></i>
+                          </span>
+                          {{User.username}}
+                          <span style="font-size: 18px">
+                            <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto" *ngIf="!User.twitchUsername"></i>
+                          </span>
+                          <span style="font-size: 20px">
+                            <i class="fab fa-twitch" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
+                          </span>
+                        </td>
+                        <td style="vertical-align: middle;">{{User.currentSeasonRatingSolo}}</td>
+                        <td style="vertical-align: middle;">{{User.currentSeasonWinsSolo}}</td>
+                      </tr>
+                      <tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+      </div>
+
+ -->
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="Tabs" style="text-align: center; margin-bottom: -11px; margin-top: 37px;">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="RatingType==1" (click)="onChangeType(1)">Solo</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="RatingType==2" (click)="onChangeType(2)">Duo</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="RatingType==3" (click)="onChangeType(3)">Squad</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <!-- <button (click)="onUpdateTables()" class="btn btn-primary pull-right" style="margin-top: 35px;  margin-bottom: -11px;">Update</button> -->
+          <span class="pull-right" style="margin-top: 35px;  margin-bottom: -11px;">
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="text" name="Search" placeholder="Išči" [(ngModel)]="Search">
+            </form>
+          </span>
+        </div>
+      </div>
+      <div class="FullTableSolo" *ngIf="RatingType==1" style="text-align:center">
+        <div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ime</th>
+                <th scope="col">Točke</th>
+                <th scope="col">Solo zmage</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let User of FullTable; let i = index">
+              <tr [class.searched]="User.username==Search">
+                <th scope="row" style="vertical-align: middle;">
+                  <b>{{i+1}}.</b>
+                </th>
+                <td>
+                  <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  {{User.username}}
+                  <span style="font-size: 18px">
+                    <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 3px;" *ngIf="!User.twitchUsername"></i>
+                  </span>
+                  <span style="font-size: 20px;">
+                    <i class="fab fa-twitch" style="margin-left: 3px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
+                  </span>
+                  <span style="font-size: 12px;" *ngIf="User.live">
+                    <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
+                    <small class="text-danger">{{User.liveCount}}</small>
+                  </span>
+                </td>
+                <td style="vertical-align: middle;">{{User.currentSeasonRatingSolo}}</td>
+                <td style="vertical-align: middle;">{{User.currentSeasonWinsSolo}}</td>
+              </tr>
+              <tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- DUO___________________________________________________DUO_____________________________________________________DUO -->
+
+      <div class="FullTableSolo" *ngIf="RatingType==2" style="text-align:center">
+        <div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ime</th>
+                <th scope="col">Točke</th>
+                <th scope="col">Duo zmage</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let User of FullTable ; let i = index">
+              <tr [class.searched]="User.username==Search">
+                <th scope="row" style="vertical-align: middle;">
+                  <b>{{i+1}}.</b>
+                </th>
+                <td>
+                  <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  {{User.username}}
+                  <span style="font-size: 18px;">
+                    <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 3px;" *ngIf="!User.twitchUsername"></i>
+                  </span>
+                  <span style="font-size: 20px;">
+                    <i class="fab fa-twitch" style="margin-left: 3px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
+                  </span>
+                  <span style="font-size: 12px; vertical-align: middle;" *ngIf="User.live">
+                    <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
+                    <small class="text-danger">{{User.liveCount}}</small>
+                  </span>
+                </td>
+                <td style="vertical-align: middle;">{{User.currentSeasonRatingDuo}}</td>
+                <td style="vertical-align: middle;">{{User.currentSeasonWinsDuo}}</td>
+              </tr>
+              <tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SQUAD___________________________________________________SQUAD_____________________________________________________SQUAD -->
+
+      <div class="FullTableSolo" *ngIf="RatingType==3" style="text-align:center">
+        <div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ime</th>
+                <th scope="col">Točke</th>
+                <th scope="col">Squad zmage</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let User of FullTable; let i = index">
+              <tr [class.searched]="User.username==Search">
+                <th scope="row" style="vertical-align: middle;">
+                  <b>{{i+1}}.</b>
+                </th>
+                <td>
+                  <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                    <i class="fa fa-trophy"></i>
+                  </span>
+                  {{User.username}}
+                  <span style="font-size: 18px">
+                    <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 3px;" *ngIf="!User.twitchUsername"></i>
+                  </span>
+                  <span style="font-size: 20px">
+                    <i class="fab fa-twitch" style="margin-left: 3px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
+                  </span>
+                  <span style="font-size: 12px; vertical-align: middle;" *ngIf="User.live">
+                   <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
+                    <small class="text-danger">{{User.liveCount}}</small>
+                  </span>
+                </td>
+                <td style="vertical-align: middle;">{{User.currentSeasonRatingSquad}}</td>
+                <td style="vertical-align: middle;">{{User.currentSeasonWinsSquad}}</td>
+              </tr>
+              <tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>

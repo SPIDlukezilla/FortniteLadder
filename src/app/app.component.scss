@@ -1,0 +1,89 @@
+.fa-twitch{
+    color: #6441a5 ;
+    cursor: pointer;
+}
+
+.nav-link, .nav-item{
+    cursor: pointer;
+}
+
+.FormDiv{
+    display: inline-block;
+}
+
+#passwordHelpBlock {
+    font-size: x-small;
+    display: block;
+  }
+  
+.input-help {
+    vertical-align: top;
+    display: inline-block;
+}
+
+.pc, .psn, .xbox{
+    margin-right: 10px;
+}
+
+.fa-desktop, .fa-playstation, .fa-xbox{
+    cursor: pointer;
+}
+
+.selectedPC{
+    color: #00AEF0;
+}
+
+.selectedPSN{
+    color: #003791;
+}
+
+.selectedXBOX{
+    color: #107c10;
+}
+
+.FullTableSolo{
+    margin-top: 10px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #00bc8c;
+}
+
+.searched {
+    color: #00bc8c;
+    background-color: rgba(0, 0, 0, 0.075);;
+}
+
+.fa-beat {
+    -webkit-animation: fa-beat 1s infinite linear;
+    animation: fa-beat 1s infinite linear;
+  }
+  @-webkit-keyframes fa-beat {
+    0% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+    50% {
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+  @keyframes fa-beat {
+    0% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+    50% {
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+    }
+    100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+
