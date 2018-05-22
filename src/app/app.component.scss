@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .fa-twitch{
     color: #6441a5 ;
     cursor: pointer;
@@ -7,6 +11,14 @@
     cursor: pointer;
 }
 
+.nav{
+    flex-wrap: nowrap;
+}
+
+.formWidth{
+    width: 100%;
+}
+
 .FormDiv{
     display: inline-block;
 }
@@ -14,7 +26,12 @@
 #passwordHelpBlock {
     font-size: x-small;
     display: block;
-  }
+}
+
+#invalidTwitchUsername {
+    font-size: x-small;
+    display: block;
+}
   
 .input-help {
     vertical-align: top;
@@ -54,6 +71,8 @@
     background-color: rgba(0, 0, 0, 0.075);;
 }
 
+
+
 .fa-beat {
     -webkit-animation: fa-beat 1s infinite linear;
     animation: fa-beat 1s infinite linear;
@@ -86,4 +105,37 @@
       transform: scale(1);
     }
   }
+
+  @media only screen and (min-width: 359px) and (max-width: 599px) {
+      .tableHeaderCenter{
+          white-space: nowrap;
+      }
+  } 
+
+@media only screen and (max-width: 358px) {
+    .tableHeaderCenter{
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .tableHeaderCenter {
+        white-space: nowrap; 
+        text-align: center;
+    }
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: none;
+}
+
+.twitchLiveCount {
+    font-size: 12px; 
+    white-space: normal;
+    // display: inline-block;
+    // display: inline-table;
+}
+
+
 

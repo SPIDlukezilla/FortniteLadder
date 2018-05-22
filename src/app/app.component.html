@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="Header" style="text-align: center; margin-top: 20px;">
     <h1 style="font-family: 'Burbank Big Condensed Bold'; font-size: 65px;">SLOVENSKA FORTNITE LESTVICA</h1>
-    <h3 style="font-family: 'Burbank Big Condensed Bold';">3. sezona</h3>
+    <h3 style="font-family: 'Burbank Big Condensed Bold';">4. sezona</h3>
   </div>
 
 
@@ -13,7 +13,7 @@
         <h4>Dodaj igralca</h4>
         <form (ngSubmit)="onSubmit(f)" #f="ngForm">
           <div class="form-row align-items-center">
-            <div class="col-auto">
+            <div class="col-auto" [class.formWidth]="WindowWidth < 566">
               <label class="sr-only" for="inlineFormInputGroup">Igralec</label>
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
@@ -33,7 +33,7 @@
               </div>
             </div>
 
-            <div class="col-auto input-help" style="margin-top: 15px;">
+            <div class="col-auto input-help" [class.formWidth]="WindowWidth < 566" style="margin-top: 15px;">
               <label class="sr-only" for="inlineFormInputGroup">Twitch</label>
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
@@ -44,18 +44,41 @@
                     <i class="fa fa-twitch fa-lg" style="cursor: auto;"></i>
                   </div>
                 </div>
-                <input type="text" name="twitch" id="twitch" class="form-control" placeholder="/ninja" [(ngModel)]="NewUserTwitch">
+                <input type="text" name="twitch" id="twitch" class="form-control" placeholder="/ninja" [(ngModel)]="NewUserTwitch" (input)="onTwitchChange()">
               </div>
-              <small id="passwordHelpBlock" class="form-text text-muted">Neobvezno</small>
+              <small *ngIf="FormValid" id="passwordHelpBlock" class="form-text text-muted">Neobvezno</small>
+              <small *ngIf="!FormValid" id="invalidTwitchUsername" class="form-text invalid-feedback">Mora se začeti z "/"</small>
             </div>
 
             <div class="col-auto">
-              <button style="width: 100px;" type="submit" [disabled]="!f.valid" [class.btn-outline-success]="!f.valid" [class.btn-success]="f.valid"
-                class="btn btn-primary mb-2">Dodaj</button>
+              <button style="width: 100px;" type="submit" [disabled]="!f.valid || !FormValid" [class.btn-outline-success]="!f.valid || !FormValid"
+                [class.btn-success]="f.valid || FormValid" class="btn btn-primary mb-2" *ngIf="!SubmitLoading">Dodaj</button>
+              <button style="width: 100px;" type="submit" disabled class="btn btn-outline-success mb-2" *ngIf="SubmitLoading">
+                <i class="fas fa-spinner fa-spin"></i>
+              </button>
             </div>
           </div>
         </form>
+
+        <div class="alert alert-dismissible alert-success" *ngIf="showAlertSuccess" style="height: 45px; margin-top: 10px; margin-bottom: 0px;">
+          <button type="button" class="close" data-dismiss="alert" (click)="onDissmiss(0)">&times;</button>
+          <strong>{{NewUser}} je bil dodan na lestvico.</strong>
+        </div>
+        <div class="alert alert-dismissible alert-warning" *ngIf="showAlertWarning" style="height: 45px; margin-top: 10px; margin-bottom: 0px;">
+          <button type="button" class="close" data-dismiss="alert" (click)="onDissmiss(1)">&times;</button>
+          <strong>{{NewUser}} je že na lestvici.</strong>
+        </div>
+        <div class="alert alert-dismissible alert-danger" *ngIf="showAlertError" style="height: 45px; margin-top: 10px; margin-bottom: 0px;">
+          <button type="button" class="close" data-dismiss="alert" (click)="onDissmiss(2)">&times;</button>
+          <strong>Napaka pri dodajanju na lestvico. ({{ServerResponse}})</strong>
+        </div>
+        <div class="alert alert-dismissible alert-danger" *ngIf="showAlertNaP" style="height: 45px; margin-top: 10px; margin-bottom: 0px;">
+          <button type="button" class="close" data-dismiss="alert" (click)="onDissmiss(3)">&times;</button>
+          <strong>Napaka pri dodajanju na lestvico.</strong> Uporabnik
+          <strong>{{NewUser}}</strong> ne obstaja.
+        </div>
       </div>
+
       <div class="opis" style="margin-top: 10px;">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultricies nibh eu urna posuere cursus. Vivamus risus
           magna, ullamcorper id tellus iaculis, egestas egestas nibh. Ut tincidunt magna sed nibh dictum posuere. Aenean
@@ -63,87 +86,36 @@
           vulputate massa. Duis vehicula maximus ante sed lacinia.</p>
       </div>
     </div>
-    <div class="col-xl-3">
-      <!--    <div class="currentlyFeatured" style="text-align:center">
-        <h5>Trenutno izpostavljeni: &nbsp; &nbsp; &nbsp;
-          <b>{{CurretnlyFeatured}}</b>
-        </h5>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Ime</th>
-              <th scope="col">{{CurretnlyFeatured}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1.</th>
-              <td>
-                <span style="font-size: 20px; color: gold; margin-right: 5px;">
-                  <i class="fa fa-trophy"></i>
-                </span>
-                Mark
-                <span style="font-size: 18px">
-                  <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 5px;"></i>
-                </span>
-              </td>
-              <td>Otto</td>
-            </tr>
-            <tr>
-              <th scope="row">2.</th>
-              <td>
-                <span style="font-size: 20px; color: silver">
-                  <i class="fa fa-trophy"></i>
-                </span>
-                Jacob
-                <span style="font-size: 18px">
-                  <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 5px;"></i>
-                </span>
-              </td>
-              <td>Thornton</td>
-            </tr>
-            <tr>
-              <th scope="row">3.</th>
-              <td>
-                <span style="font-size: 20px; color: #cd7f32">
-                  <i class="fa fa-trophy"></i>
-                </span>
-                Jacob
-                <span style="font-size: 18px">
-                  <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 5px;"></i>
-                </span>
-              </td>
-              <td>Larry the Bird</td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
 
+    <div class="col-xl-3">
       <div class="card border-secondary mb-3">
         <div class="card-header">
-          <span class="pull-left">
-            <h5>Trenutno izpostavljeni:</h5>
+          <span style="text-align: center">
+            <h5>Trenutno izpostavljeni:
+              <br />
+              <b>{{CurretnlyFeatured}}</b> ({{FeaturedPlatform}})
+            </h5>
           </span>
-          <span class="pull-right">
+          <!-- <span class="pull-right">
             <h5>
               <b>{{CurretnlyFeatured}}</b> ({{Platform}})
             </h5>
-          </span>
+          </span> -->
         </div>
         <div class="card-body" style="padding-bottom: 0px;">
           <table class="table table-hover" style="margin-top: -22px;">
             <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Ime</th>
-                <th scope="col">{{CurretnlyFeatured}}</th>
+              <tr style="width: 100%;">
+                <th colspan="2">
+                  <span class="pull-left">Ime</span>
+                  <span class="pull-right" style="padding-right: 3px;">{{CurretnlyFeatured}}</span>
+                </th>
+                <!-- <th class="tableHeaderCenter">{{CurretnlyFeatured}}</th> -->
               </tr>
             </thead>
             <tbody *ngFor="let User of CurrentlyFeaturedTable; let i = index">
               <tr>
-                <th scope="row">{{i+1}}</th>
-                <td>
+                <td style="white-space: nowrap">
                   <span *ngIf="i==0" style="font-size: 20px; color: gold; margin-right: 5px;">
                     <i class="fa fa-trophy"></i>
                   </span>
@@ -160,12 +132,12 @@
                   <span style="font-size: 20px">
                     <i class="fab fa-twitch" style=" margin-left: 5px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
                   </span>
-                  <div style="font-size: 12px; display: inline-block;" *ngIf="User.live">
+                  <span class="twitchLiveCount" *ngIf="User.viewerCount > 0">
                     <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
-                    <small class="text-danger" >{{User.liveCount}}</small>
-                  </div>
+                    <small class="text-danger">{{User.viewerCount}}</small>
+                  </span>
                 </td>
-                <td style="text-align: center;">
+                <td style="text-align: center; vertical-align: middle">
                   {{User[FeaturedItem]}}
                 </td>
               </tr>
@@ -174,22 +146,21 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-2"></div>
+    <div class="col-xl-2"></div>
   </div>
 
   <!-- SOLO___________________________________________________SOLO_____________________________________________________SOLO -->
   <div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
+    <div class="col-xl-2"></div>
+    <div class="col-xl-8"  style="padding-left: 0px">
 
       <div class="Head">
         <h4>Platforma </h4>
       </div>
       <div class="Tabs">
-        <ul class="nav nav-pills">
-
+        <ul class="nav nav-pills" style="flex-wrap: wrap">
           <li class="nav-item">
-            <a class="nav-link" [class.active]="SelectedPlatform=='pc'" (click)="onChangeTypePlatform('pc')">PC</a>
+            <a class="nav-link" [class.active]="SelectedPlatform=='pc'" (click)="onChangeTypePlatform('pc')">Pc</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="SelectedPlatform=='psn'" (click)="onChangeTypePlatform('psn')">Playstation</a>
@@ -202,106 +173,33 @@
           </li>
         </ul>
       </div>
-
-
-      <!-- 
-      <div class="card border-success mb-3" style="margin-top: 37px;">
-        <div class="card-header">
-          <span class="pull-left" style="margin-bottom: -14px; margin-left: -20px;">
-            <div class="Tabs" style="text-align: center;">
-              <ul class="nav nav-tabs">
-                <li class="nav-item">
-                  <a class="nav-link" [class.active]="RatingType==1" (click)="onChangeType(1)">Solo</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" [class.active]="RatingType==2" (click)="onChangeType(2)">Duo</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" [class.active]="RatingType==3" (click)="onChangeType(3)">Squad</a>
-                </li>
-              </ul>
-            </div>
-          </span>
-          <span class="pull-right"  style="margin-bottom: -14px; margin-right: -20px;">
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="text" name="Search" placeholder="Išči" [(ngModel)]="Search">
-            </form>
-          </span>
-        </div>
-        <div class="card-body">
-            <div class="FullTableSolo" *ngIf="RatingType==1" style="text-align:center">
-                <div>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Ime</th>
-                        <th scope="col">Točke</th>
-                        <th scope="col">Solo zmage</th>
-                      </tr>
-                    </thead>
-                    <tbody *ngFor="let User of FullTable; let i = index">
-                      <tr [class.searched]="User.username==Search">
-                        <th scope="row" style="vertical-align: middle;">
-                          <b>{{i+1}}.</b>
-                        </th>
-                        <td>
-                          <span *ngIf="i==0" style="font-size: 25px; color: gold">
-                            <i class="fa fa-trophy"></i>
-                          </span>
-                          <span *ngIf="i==1" style="font-size: 25px; color: silver">
-                            <i class="fa fa-trophy"></i>
-                          </span>
-                          <span *ngIf="i==2" style="font-size: 25px; color: #cd7f32">
-                            <i class="fa fa-trophy"></i>
-                          </span>
-                          {{User.username}}
-                          <span style="font-size: 18px">
-                            <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto" *ngIf="!User.twitchUsername"></i>
-                          </span>
-                          <span style="font-size: 20px">
-                            <i class="fab fa-twitch" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
-                          </span>
-                        </td>
-                        <td style="vertical-align: middle;">{{User.currentSeasonRatingSolo}}</td>
-                        <td style="vertical-align: middle;">{{User.currentSeasonWinsSolo}}</td>
-                      </tr>
-                      <tr>
-                    </tbody>
-                  </table>
-                </div>
+      <div style="margin-top: 30px"></div>
+      <span [class.pull-right]="WindowWidth > 991" style="margin-top: 0px;  margin-bottom: -35px;">
+        <form class="form-inline my-2 my-lg-0">
+          <div class="form-group" style="width: 100%">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fa fa-search"></i>
+                </span>
               </div>
-        </div>
-      </div>
-
- -->
-
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="Tabs" style="text-align: center; margin-bottom: -11px; margin-top: 37px;">
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="RatingType==1" (click)="onChangeType(1)">Solo</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="RatingType==2" (click)="onChangeType(2)">Duo</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="RatingType==3" (click)="onChangeType(3)">Squad</a>
-              </li>
-            </ul>
+              <input class="form-control mr-sm-2" type="text" name="Search" placeholder="Išči" [(ngModel)]="Search" (input)="onSearchChange()">
+            </div>
           </div>
-        </div>
-        <div class="col-sm-6">
-          <!-- <button (click)="onUpdateTables()" class="btn btn-primary pull-right" style="margin-top: 35px;  margin-bottom: -11px;">Update</button> -->
-          <span class="pull-right" style="margin-top: 35px;  margin-bottom: -11px;">
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="text" name="Search" placeholder="Išči" [(ngModel)]="Search">
-            </form>
-          </span>
-        </div>
-      </div>
-      <div class="FullTableSolo" *ngIf="RatingType==1" style="text-align:center">
+        </form>
+      </span>
+      <ul class="nav nav-tabs" style="margin-bottom: -11px;">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="RatingType==1" (click)="onChangeType(1)">Solo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="RatingType==2" (click)="onChangeType(2)">Duo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="RatingType==3" (click)="onChangeType(3)">Squad</a>
+        </li>
+      </ul>
+      <div class="FullTableSolo tab-content" *ngIf="RatingType==1" style="text-align:center">
         <div>
           <table class="table table-hover">
             <thead>
@@ -309,40 +207,64 @@
                 <th scope="col">#</th>
                 <th scope="col">Ime</th>
                 <th scope="col">Točke</th>
-                <th scope="col">Solo zmage</th>
+                <th scope="col">Zmage</th>
               </tr>
             </thead>
             <tbody *ngFor="let User of FullTable; let i = index">
-              <tr [class.searched]="User.username==Search">
+              <tr id='{{User.username}}' [class.searched]="User.username==Search">
                 <th scope="row" style="vertical-align: middle;">
-                  <b>{{i+1}}.</b>
+                  <b>
+                    <span *ngIf="WindowWidth < 470">
+                      <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i>2">
+                        {{i+1}}.
+                      </span>
+                    </span>
+                    <span *ngIf="WindowWidth >= 470">
+                      {{i+1}}.
+                    </span>
+                  </b>
                 </th>
                 <td>
-                  <span *ngIf="i==0" style="font-size: 25px; color: gold">
-                    <i class="fa fa-trophy"></i>
-                  </span>
-                  <span *ngIf="i==1" style="font-size: 24px; color: silver">
-                    <i class="fa fa-trophy"></i>
-                  </span>
-                  <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
-                    <i class="fa fa-trophy"></i>
+                  <span *ngIf="WindowWidth >= 470">
+                    <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                      <i class="fa fa-trophy"></i>
+                    </span>
                   </span>
                   {{User.username}}
                   <span style="font-size: 18px">
                     <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 3px;" *ngIf="!User.twitchUsername"></i>
                   </span>
+                  <span *ngIf="WindowWidth < 460 && User.viewerCount > 0">
+                    <br />
+                  </span>
+                  <!-- TU DODAJ <br /> ce je menje kak 460 pa ce je live-->
                   <span style="font-size: 20px;">
                     <i class="fab fa-twitch" style="margin-left: 3px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
                   </span>
-                  <span style="font-size: 12px;" *ngIf="User.live">
+                  <span style="font-size: 12px;" *ngIf="User.viewerCount > 0">
                     <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
-                    <small class="text-danger">{{User.liveCount}}</small>
+                    <small class="text-danger">{{User.viewerCount}}</small>
                   </span>
                 </td>
                 <td style="vertical-align: middle;">{{User.currentSeasonRatingSolo}}</td>
                 <td style="vertical-align: middle;">{{User.currentSeasonWinsSolo}}</td>
               </tr>
-              <tr>
+
             </tbody>
           </table>
         </div>
@@ -357,34 +279,57 @@
                 <th scope="col">#</th>
                 <th scope="col">Ime</th>
                 <th scope="col">Točke</th>
-                <th scope="col">Duo zmage</th>
+                <th scope="col">Zmage</th>
               </tr>
             </thead>
             <tbody *ngFor="let User of FullTable ; let i = index">
               <tr [class.searched]="User.username==Search">
                 <th scope="row" style="vertical-align: middle;">
-                  <b>{{i+1}}.</b>
+                  <b>
+                    <span *ngIf="WindowWidth < 470">
+                      <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i>2">
+                        {{i+1}}.
+                      </span>
+                    </span>
+                    <span *ngIf="WindowWidth >= 470">
+                      {{i+1}}.
+                    </span>
+                  </b>
                 </th>
                 <td>
-                  <span *ngIf="i==0" style="font-size: 25px; color: gold">
-                    <i class="fa fa-trophy"></i>
-                  </span>
-                  <span *ngIf="i==1" style="font-size: 24px; color: silver">
-                    <i class="fa fa-trophy"></i>
-                  </span>
-                  <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
-                    <i class="fa fa-trophy"></i>
+                  <span *ngIf="WindowWidth >= 470">
+                    <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                      <i class="fa fa-trophy"></i>
+                    </span>
                   </span>
                   {{User.username}}
                   <span style="font-size: 18px;">
                     <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 3px;" *ngIf="!User.twitchUsername"></i>
                   </span>
+                  <span *ngIf="WindowWidth < 460 && User.viewerCount > 0">
+                    <br />
+                  </span>
                   <span style="font-size: 20px;">
                     <i class="fab fa-twitch" style="margin-left: 3px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
                   </span>
-                  <span style="font-size: 12px; vertical-align: middle;" *ngIf="User.live">
+                  <span style="font-size: 12px; vertical-align: middle;" *ngIf="User.viewerCount > 0">
                     <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
-                    <small class="text-danger">{{User.liveCount}}</small>
+                    <small class="text-danger">{{User.viewerCount}}</small>
                   </span>
                 </td>
                 <td style="vertical-align: middle;">{{User.currentSeasonRatingDuo}}</td>
@@ -406,34 +351,57 @@
                 <th scope="col">#</th>
                 <th scope="col">Ime</th>
                 <th scope="col">Točke</th>
-                <th scope="col">Squad zmage</th>
+                <th scope="col">Zmage</th>
               </tr>
             </thead>
             <tbody *ngFor="let User of FullTable; let i = index">
               <tr [class.searched]="User.username==Search">
                 <th scope="row" style="vertical-align: middle;">
-                  <b>{{i+1}}.</b>
+                  <b>
+                    <span *ngIf="WindowWidth < 470">
+                      <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                        <i class="fa fa-trophy"></i>
+                      </span>
+                      <span *ngIf="i>2">
+                        {{i+1}}.
+                      </span>
+                    </span>
+                    <span *ngIf="WindowWidth >= 470">
+                      {{i+1}}.
+                    </span>
+                  </b>
                 </th>
                 <td>
-                  <span *ngIf="i==0" style="font-size: 25px; color: gold">
-                    <i class="fa fa-trophy"></i>
-                  </span>
-                  <span *ngIf="i==1" style="font-size: 24px; color: silver">
-                    <i class="fa fa-trophy"></i>
-                  </span>
-                  <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
-                    <i class="fa fa-trophy"></i>
+                  <span *ngIf="WindowWidth >= 470">
+                    <span *ngIf="i==0" style="font-size: 25px; color: gold">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span *ngIf="i==1" style="font-size: 24px; color: silver">
+                      <i class="fa fa-trophy"></i>
+                    </span>
+                    <span *ngIf="i==2" style="font-size: 23px; color: #cd7f32">
+                      <i class="fa fa-trophy"></i>
+                    </span>
                   </span>
                   {{User.username}}
                   <span style="font-size: 18px">
                     <i class="fab fa-twitch" style="color: #AAAFB4; cursor: auto; margin-left: 3px;" *ngIf="!User.twitchUsername"></i>
                   </span>
+                  <span *ngIf="WindowWidth < 460 && User.viewerCount > 0">
+                    <br />
+                  </span>
                   <span style="font-size: 20px">
                     <i class="fab fa-twitch" style="margin-left: 3px;" *ngIf="User.twitchUsername" (click)="onTwitch(i)"></i>
                   </span>
-                  <span style="font-size: 12px; vertical-align: middle;" *ngIf="User.live">
-                   <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
-                    <small class="text-danger">{{User.liveCount}}</small>
+                  <span style="font-size: 12px; vertical-align: middle;" *ngIf="User.viewerCount > 0">
+                    <i class="fas fa-circle fa-beat" style="color: red; margin-left: 3px;"></i>
+                    <small class="text-danger">{{User.viewerCount}}</small>
                   </span>
                 </td>
                 <td style="vertical-align: middle;">{{User.currentSeasonRatingSquad}}</td>
@@ -445,6 +413,13 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-2"></div>
+    <div class="col-xl-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-xl-2"></div>
+    <div class="col-xl-8" style="text-align: center;">
+      <small class="form-text text-muted">Powered by fortnitetracker.</small>
+    </div>
+    <div class="col-xl-2"></div>
   </div>
 </div>
