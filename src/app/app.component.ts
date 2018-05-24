@@ -1,4 +1,4 @@
-import { Component, HostListener, AfterViewInit} from '@angular/core';
+import { Component, HostListener, AfterViewInit } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,9 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/interval';
 import { element } from 'protractor';
+
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+// import scrollIntoView from 'scroll-into-view-if-needed';
 
 
 @Component({
@@ -61,7 +64,13 @@ export class AppComponent implements AfterViewInit {
 
   SubmitLoading = false;
 
-  constructor(private http: HttpClient) {
+  actions: {
+    el: Element,
+    top: 0,
+    left: 0
+  }[];
+
+  constructor(private http: HttpClient, private _scrollToService: ScrollToService) {
     this.http.get('https://fortniteleaderboard.azurewebsites.net/Fortnite/FullTable?sortBy=1&platform=pc').subscribe(data => {
       this.FullTable = data;
       console.log(data);
@@ -217,8 +226,19 @@ export class AppComponent implements AfterViewInit {
     const find = this.FullTable.find(x => x.username === this.Search);
     if (find) {
       const scroll = document.getElementById(this.Search);
-      // console.log(scroll);
-      scroll.scrollIntoView(false/* {block: 'end', behavior: 'smooth', inline: 'end'} */);
+      console.log(scroll);
+      const scrollDiv = document.getElementById('scrollDiv');
+      const TopPos = scroll.offsetTop;
+      console.log(scrollDiv);
+
+      const config: ScrollToConfigOptions = {
+        // target: this.Search
+        offset: TopPos
+      };
+      console.log(config);
+
+      this._scrollToService.scrollTo(config);
+
     }
   }
 
